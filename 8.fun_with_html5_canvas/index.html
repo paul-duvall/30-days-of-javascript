@@ -1,0 +1,96 @@
+<!-- This project uses HTML5 canvas to create a drawing tool -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HTML5 Canvas</title>
+</head>
+<body>
+<canvas id="draw" width="800" height="800"></canvas>
+
+<script>
+  // Variable to store canvas
+  const canvas = document.querySelector('#draw');
+  // Variable to store the 'context' of the canvas that we will actually draw on (can be set to 2d or 3d)
+  const ctx = canvas.getContext('2d');
+
+  // Set the canvas to be the width and height of the browser window
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  // Sets the colour and style of the brush  
+  ctx.strokeStyle = '#BADA55';
+  ctx.lineJoin = 'round';
+  ctx.lineCap = 'round';
+  ctx.lineWidth = 100;
+
+  // Variable to track whether the user has the mouse down and is drawing
+  let isDrawing = false;
+
+  // 
+  let lastX = 0;
+  let lastY = 0;
+
+  // set variable for the hue for the colour
+  let hue = 0;
+  // set variable to contain the direction of size change for brush size
+  let direction = true;
+
+  //
+  function draw(e){
+    if(!isDrawing) return;
+    console.log(e);
+    ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
+    ctx.beginPath();
+    // start from
+    ctx.moveTo(lastX, lastY);
+    // go to
+    ctx.lineTo(e.offsetX, e.offsetY);
+    ctx.stroke();
+
+    // set the lastX and lastY variables to current mouse position
+    lastX = e.offsetX;
+    lastY = e.offsetY;
+    // Slight incriment to the hue
+    hue++;
+    if(hue >= 360) {
+      hue = 0;
+    }
+
+    if(ctx.lineWidth >= 100 || ctx.lineWidth <= 1) {
+      direction = !direction;
+    }
+
+    if(direction) {
+      ctx.lineWidth++;
+    } else {
+      ctx.lineWidth--;
+    }
+  }
+
+  // sets isDrawing to true on mousedown
+  canvas.addEventListener('mousedown', (e) => {
+    isDrawing = true;
+    lastX = e.offsetX;
+    lastY = e.offsetY;
+  });
+  
+  // Activates draw function
+  canvas.addEventListener('mousemove', draw);
+  // sets isDrawing to false on mouseup
+  canvas.addEventListener('mouseup', () => isDrawing = false);
+  // Sets isDrawing to false if mouse goes outside window (incase user does this with mousedown)
+  canvas.addEventListener('mouseout', () => isDrawing = false);
+
+
+</script>
+
+<style>
+  html, body {
+    margin: 0;
+  }
+</style>
+
+</body>
+</html>
