@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Reference vs copy</title>
+</head>
+<body>
+  
+  <script>
+  
+    let age = 100;
+    let age2 = age;
+
+    // console.log(age,age2);
+
+    // If you update a variable, any variables that reference that original variable to not update along with it.
+
+    age = 200;
+
+    // console.log(age,age2);
+
+    let name = 'Paul';
+    let name2 = name;
+
+    // console.log(name, name2);
+
+    // Also the case with strings
+
+    name = 'Tom';
+
+    // console.log(name, name2);
+  
+    // Working with arrays
+    // Let's say you have an array...
+
+    const players = ['Paul', 'Alan', 'Clive', 'Bonny'];
+
+    // ...and you want to make a copy of it
+
+    const team = players;
+
+    // console.log(players, team);
+
+    // If you want to change one value like this:
+
+    team[3] = 'Bucky';
+
+    // You are actually changing both arrays because the second array isn't a new, separate array, it is a reference to the original.
+
+    // console.log(players, team);
+
+    // If you want to make an actual, separate copy of an array, you can use slice with no parameters
+    const team2 = players.slice();
+    team2[3] = 'New Kid';
+
+    // console.log(players, team2);
+
+    // This can also be achieved using concat:
+    const team3 = [].concat(players);
+
+    // Or the spread operator
+    const team4 = [...players];
+
+    // Or Array.from
+    const team5 = Array.from(players);
+
+    // This is also the case for objects:
+    const person = {
+      name: 'Tim Bucktoo',
+      age: 80
+    };
+
+    // If we create another object references the first like this...
+    const captain = person;
+
+    // ...and then change something...
+    captain.hat = 'jaunty';
+
+    // ...this changes the original object, because the new one is a reference not a copy
+    // console.log(person);
+
+    // Make a copy using Object.assign
+    // Note that changes can be added as an additional parameter:
+    const firstMate = Object.assign({}, person, { leg: 'Wooden'});
+    firstMate.parrot = 'Polly';
+    console.log(firstMate);
+
+    // And these changes have not affected the original person
+    console.log(person);
+
+  </script>
+</body>
+</html>
